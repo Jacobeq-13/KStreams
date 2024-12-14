@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrucziStreams</title>
+    <style>
+        /* Styl ogólny */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Nagłówek */
+        header {
+            background-color: #1e1e1e;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #ff0000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #ff0000;
+        }
+
+        /* Nawigacja */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px 0;
+            background-color: #1e1e1e;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.2rem;
+            padding: 5px 15px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            border: 1px solid #ff0000;
+            border-radius: 5px;
+            background-color: #ff0000;
+            color: #121212;
+        }
+
+        /* Główna treść */
+        main {
+            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex: 1;
+        }
+
+        main p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        main a {
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        main a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styl obrazu */
+        .main-image-left {
+            max-width: 300px;
+            height: auto;
+            align-self: flex-start;
+            margin-top: 115px; /* Przesunięcie w dół */
+        }
+
+        .main-image-right {
+            max-width: 300px;
+            height: auto;
+            align-self: flex-start;
+            margin-top: 300px; /* Przesunięcie w dół */
+        }
+
+        /* Stopka */
+        footer {
+            background-color: #1e1e1e;
+            text-align: center;
+            padding: 15px 0;
+            border-top: 3px solid #ff0000;
+            font-size: 0.9rem;
+        }
+
+        /* Stylowanie zegara */
+        #clock {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 5px;
+        }
+
+        /* Stylowanie informacji o meczu */
+        #match-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Nagłówek -->
+    <header>
+        <h1>KrucziStreams</h1>
+    </header>
+
+    <!-- Nawigacja -->
+    <nav>
+        <a href="https://back.methstreamer.com/nba-live-streams" target="_blank">NBA</a>
+        <a href="https://back.methstreamer.com/mma-live-streams" target="_blank">UFC</a>
+        <a href="https://back.methstreamer.com/soccer-live-streams" target="_blank">Piłka nożna</a>
+        <a href="https://back.methstreamer.com/formula1-live-streams" target="_blank">Formuła 1</a>
+    </nav>
+
+    <!-- Główna treść -->
+    <main>
+        <img src="edward.png" alt="Obrazek lewy" class="main-image-left">
+        <div>
+            <h2>Witaj Skurwysynu!</h2>
+            <p>Tutaj znajdziesz streamy na żywo z najlepszych wydarzeń sportowych.</p>
+            <h2>Epoka PPV i reklam się skończyła, nygusie!</h2>
+            <p>Odwiedź nasz Reddit: <a href="https://www.reddit.com/user/BearRecaptcha/" target="_blank">BearRecaptcha</a></p>
+        </div>
+        <img src="perez.png" alt="Obrazek prawy" class="main-image-right">
+    </main>
+
+    <!-- Stopka -->
+    <footer>
+        <p>&copy; Kruczi anonymus est 2024-2025</p>
+    </footer>
+
+    <!-- Zegar -->
+    <div id="clock"></div>
+
+    <!-- Informacja o meczu -->
+    <div id="match-info">Ładowanie danych o meczu...</div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+
+            // Dodaj zerowanie do jednocyfrowych liczb
+            hours = (hours < 10) ? '0' + hours : hours;
+            minutes = (minutes < 10) ? '0' + minutes : minutes;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+            // Tworzenie łańcucha tekstowego z czasem
+            const timeString = `${hours}:${minutes}:${seconds}`;
+
+            // Wyświetlanie zegara w elemencie HTML
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        // Uruchomienie zegara po załadowaniu strony
+        setInterval(updateClock, 1000);
+
+        // Pierwsze uruchomienie zegara
+        updateClock();
+
+        // Funkcja do pobierania danych o meczu
+        async function fetchMatchInfo() {
+            const apiUrl = 'https://api.football-data.org/v4/matches'; // API do piłki nożnej
+            const apiKey = '8ae5965ae91b4340ac3b79923f714809'; // Twój klucz API
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'X-Auth-Token': apiKey
+                    }
+                });
+
+                // Sprawdzanie, czy odpowiedź jest poprawna
+                if (!response.ok) {
+                    throw new Error(`Błąd: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Sprawdzenie, co zwróciło API (możemy zobaczyć dane w konsoli)
+                console.log(data);
+
+                // Jeśli API zwróci dane, wybierz pierwszy mecz
+                if (data.matches && data.matches.length > 0) {
+                    const match = data.matches[0];
+                    const matchInfo = `${match.homeTeam.name} vs ${match.awayTeam.name} - ${match.competition.name}`;
+                    document.getElementById('match-info').textContent = matchInfo;
+                } else {
+                    document.getElementById('match-info').textContent = 'Brak dostępnych meczów.';
+                }
+            } catch (error) {
+                // W razie błędu wyświetl komunikat
+                console.error(error);
+                document.getElementById('match-info').textContent = 'Błąd podczas ładowania danych o meczu.';
+            }
+        }
+
+        // Wywołanie funkcji pobierającej dane o meczu
+        fetchMatchInfo();
+    </script>
+</body>
+</html>
